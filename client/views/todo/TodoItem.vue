@@ -11,18 +11,18 @@
 
 <script>
     export default {
-        name: "todo-item",
-        props: {
-            todoData: {
-                type: Object,
-                required: true
-            }
-        },
-        methods: {
-            removeItem() {
-                this.$emit('del', this.todoData.id)
-            }
+      name: 'todo-item',
+      props: {
+        todoData: {
+          type: Object,
+          required: true
         }
+      },
+      methods: {
+        removeItem () {
+          this.$emit('del', this.todoData.id)
+        }
+      }
     }
 </script>
 
