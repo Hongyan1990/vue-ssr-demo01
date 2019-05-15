@@ -38,9 +38,7 @@ import TodoItem from './TodoItem.vue'
 import TodoTabs from './TodoTabs.vue'
 import {
   mapState,
-  mapGetters,
-  mapActions,
-  mapMutations
+  mapActions
 } from 'vuex'
 
 let id = 0
@@ -69,7 +67,6 @@ export default {
   },
   data () {
     return {
-      todos: [],
       states: ['all', 'active', 'completed'],
       filter: 'all',
       tabVal: ''
@@ -87,6 +84,7 @@ export default {
     //     num2: 123
     //   })
     // }, 1000)
+    this.fetchTodos()
     this.updateCountAsync({
       num: 5,
       time: 2000
@@ -95,24 +93,25 @@ export default {
     this['a/add']()
   },
   computed: {
+    ...mapState(['todos']),
     filteredTodos () {
       if (this.filter === 'all') {
         return this.todos
       }
       const completed = this.filter === 'completed'
       return this.todos.filter(v => v.complated === completed)
-    },
+    }
     // count () {
     //   return this.$store.state.count
     // },
-    ...mapState({
-      counter: 'count',
-      text1: (state) => state.a.text
-    }),
-    ...mapGetters({
-      'fullName': 'fullName',
-      textPlus: 'a/textPlus'
-    })
+    // ...mapState({
+    //   counter: 'count',
+    //   text1: (state) => state.a.text
+    // }),
+    // ...mapGetters({
+    //   'fullName': 'fullName',
+    //   textPlus: 'a/textPlus'
+    // })
     // text1 () {
     //   return this.$store.state.a.text
     // }
@@ -138,8 +137,9 @@ export default {
     clearCompleted () {
       this.todos = this.todos.filter(v => !v.complated)
     },
-    ...mapMutations(['updateCount', 'a/updateText1']),
-    ...mapActions(['updateCountAsync', 'a/add']),
+    // ...mapMutations(['updateCount', 'a/updateText1']),
+    // ...mapActions(['updateCountAsync', 'a/add']),
+    ...mapActions(['fetchTodos']),
     changeTabs (index) {
       this.filter = index
     }

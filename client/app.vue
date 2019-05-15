@@ -21,7 +21,7 @@
     <transition name="fade">
       <router-view />
     </transition>
-    <a @click="notifyFun">click me</a>
+    <!--<a @click="notifyFun">click me</a>-->
     <!--<notification :content="'notify test'"/>-->
     <todo-footer></todo-footer>
     <router-view name="a" />

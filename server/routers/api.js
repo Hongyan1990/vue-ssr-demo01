@@ -7,6 +7,15 @@ const successRespons = (data) => {
     data
   }
 }
+const validateUser = async (ctx, next) => {
+  if(!ctx.session.user) {
+    ctx.status = 401
+    ctx.body = 'need login'
+  } else {
+    await next()
+  }
+}
+apiRouter.use(validateUser)
 apiRouter
   .get('/todo', async ctx => {
     const data = await ctx.db.getAllTodos()
