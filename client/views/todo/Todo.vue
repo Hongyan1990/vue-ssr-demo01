@@ -51,20 +51,20 @@ export default {
     TodoItem,
     TodoTabs
   },
-  beforeRouteEnter (to, from, next) {
-    console.log('Todo before enter')
-    next(vm => {
-      console.log('this is vm.id ', vm.id)
-    })
-  },
-  beforeRouteUpdate (to, from, next) {
-    console.log('Todo before update', this.id)
-    next()
-  },
-  beforeRouteLeave (to, from, next) {
-    console.log('Todo before leave')
-    next()
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   console.log('Todo before enter')
+  //   next(vm => {
+  //     console.log('this is vm.id ', vm.id)
+  //   })
+  // },
+  // beforeRouteUpdate (to, from, next) {
+  //   console.log('Todo before update', this.id)
+  //   next()
+  // },
+  // beforeRouteLeave (to, from, next) {
+  //   console.log('Todo before leave')
+  //   next()
+  // },
   data () {
     return {
       states: ['all', 'active', 'completed'],
@@ -74,6 +74,7 @@ export default {
   },
   props: ['id'],
   mounted () {
+    this.fetchTodos()
     // console.log(this.$route)
     // console.log(this.id)
     // this.$store.state.count = 3
@@ -84,13 +85,12 @@ export default {
     //     num2: 123
     //   })
     // }, 1000)
-    this.fetchTodos()
-    this.updateCountAsync({
-      num: 5,
-      time: 2000
-    })
-    this['a/updateText1']('abc')
-    this['a/add']()
+    // this.updateCountAsync({
+    //   num: 5,
+    //   time: 2000
+    // })
+    // this['a/updateText1']('abc')
+    // this['a/add']()
   },
   computed: {
     ...mapState(['todos']),
@@ -120,6 +120,7 @@ export default {
     // }
   },
   methods: {
+    ...mapActions(['fetchTodos']),
     addTodo (e) {
       this.todos.unshift({
         id: id++,
@@ -139,7 +140,6 @@ export default {
     },
     // ...mapMutations(['updateCount', 'a/updateText1']),
     // ...mapActions(['updateCountAsync', 'a/add']),
-    ...mapActions(['fetchTodos']),
     changeTabs (index) {
       this.filter = index
     }

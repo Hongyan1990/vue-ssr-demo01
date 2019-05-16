@@ -12,35 +12,35 @@ export default () => {
     state: defaultState,
     mutations,
     getters,
-    actions,
-    modules: {
-      a: {
-        namespaced: true,
-        state: {
-          text: 123
-        },
-        mutations: {
-          updateText1 (state, text) {
-            state.text = text
-          }
-        },
-        getters: {
-          textPlus (state, getter, rootState) {
-            return state.text + rootState.b.text
-          }
-        },
-        actions: {
-          add ({state, commit, rootState}) {
-            commit('updateText1', rootState.count)
-          }
-        }
-      },
-      b: {
-        state: {
-          text: 2
-        }
-      }
-    }
+    actions
+    // modules: {
+    //   a: {
+    //     namespaced: true,
+    //     state: {
+    //       text: 123
+    //     },
+    //     mutations: {
+    //       updateText1 (state, text) {
+    //         state.text = text
+    //       }
+    //     },
+    //     getters: {
+    //       textPlus (state, getter, rootState) {
+    //         return state.text + rootState.b.text
+    //       }
+    //     },
+    //     actions: {
+    //       add ({state, commit, rootState}) {
+    //         commit('updateText1', rootState.count)
+    //       }
+    //     }
+    //   },
+    //   b: {
+    //     state: {
+    //       text: 2
+    //     }
+    //   }
+    // }
   })
   if (module.hot) {
     module.hot.accept([

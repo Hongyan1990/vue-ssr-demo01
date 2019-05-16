@@ -27,7 +27,7 @@ const notify = (option) => {
   } = option
   if (Vue.prototype.$isServer) return
   let instance = new NotificationConstructor({
-    data: { autoClose },
+    data: { autoClose: autoClose === undefined ? 3000 : autoClose },
     propsData: {
       ...rest
     }

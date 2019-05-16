@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   metaInfo: {
@@ -24,10 +25,17 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['toLogin']),
     login (e) {
       e.preventDefault()
       if (this.validteForm()) {
         //  发送请求
+        this.toLogin({
+          username: this.username,
+          password: this.password
+        }).then(() => {
+          this.$router.replace('/app')
+        })
       }
     },
     validteForm () {

@@ -7,7 +7,7 @@ const request = axios.create({
 })
 
 const handleRequest = (request) => {
-  new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     request.then(response => {
       const data = response.data
       if (!data) {
@@ -19,6 +19,15 @@ const handleRequest = (request) => {
         return
       }
       resolve(data.data)
+    }).catch(err => {
+      console.log(err)
+      if (err.response.status === 401) {
+        reject(createError(401, 'need login'))
+        return
+      }
+      if (err.response.status === 400) {
+        reject(createError(400, err.response.data.message))
+      }
     })
   })
 }
@@ -26,5 +35,8 @@ const handleRequest = (request) => {
 module.exports = {
   getAllTodos () {
     return handleRequest(request.get('api/todo'))
+  },
+  userLogin (username, password) {
+    return handleRequest(request.post('user/login', {username, password}))
   }
 }
