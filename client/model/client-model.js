@@ -38,5 +38,17 @@ module.exports = {
   },
   userLogin (username, password) {
     return handleRequest(request.post('user/login', {username, password}))
+  },
+  addTodo (todo) {
+    return handleRequest(request.post('api/todo', todo))
+  },
+  updateTodo (id, todo) {
+    return handleRequest(request.put(`api/todo/${id}`, todo))
+  },
+  deleteTodo (id) {
+    return handleRequest(request.delete(`api/todo/${id}`))
+  },
+  clearAllCompleted (ids) {
+    return handleRequest(request.post('/api/delete/completed', {ids}))
   }
 }

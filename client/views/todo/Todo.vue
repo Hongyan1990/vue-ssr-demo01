@@ -12,14 +12,14 @@
             <input type="text"
                    placeholder="请输入你要去做的事情"
                    autofocus="true"
-                   v-model="tabVal"
-                   @keyup.enter="addTodo"
+                   @keyup.enter="handleAdd"
             >
         </section>
         <section>
             <todo-item :todoData="todo"
                        v-for="todo in filteredTodos"
                        :key="todo.id"
+                       @toggleTodo="toggleTodoState"
                        @del="delTodo"
             />
         </section>
@@ -41,7 +41,7 @@ import {
   mapActions
 } from 'vuex'
 
-let id = 0
+// let id = 0
 export default {
   name: 'todo',
   metaInfo: {
@@ -68,8 +68,7 @@ export default {
   data () {
     return {
       states: ['all', 'active', 'completed'],
-      filter: 'all',
-      tabVal: ''
+      filter: 'all'
     }
   },
   props: ['id'],
@@ -120,23 +119,43 @@ export default {
     // }
   },
   methods: {
-    ...mapActions(['fetchTodos']),
-    addTodo (e) {
-      this.todos.unshift({
-        id: id++,
-        content: e.target.value.trim(),
+    ...mapActions(['fetchTodos', 'createTodo', 'updateTodo', 'deleteTodo', 'clearAllCompleted']),
+    handleAdd (e) {
+      const content = e.target.value
+      if (!content) {
+        this.$notify({
+          content: '请输入内容'
+        })
+        return
+      }
+      this.createTodo({
+        content,
         complated: false
       })
       e.target.value = ''
     },
+    toggleTodoState (todo) {
+      const newTodo = Object.assign({}, todo, {
+        complated: !todo.complated
+      })
+      this.updateTodo(newTodo)
+    },
+    // addTodo (e) {
+    //   this.todos.unshift({
+    //     id: id++,
+    //     content: e.target.value.trim(),
+    //     complated: false
+    //   })
+    //   e.target.value = ''
+    // },
     delTodo (id) {
-      this.todos.splice(this.todos.indexOf(this.todos.find(todo => todo.id === id)), 1)
+      this.deleteTodo(id)
     },
     filterTodos (state) {
       this.filter = state
     },
     clearCompleted () {
-      this.todos = this.todos.filter(v => !v.complated)
+      this.clearAllCompleted()
     },
     // ...mapMutations(['updateCount', 'a/updateText1']),
     // ...mapActions(['updateCountAsync', 'a/add']),
