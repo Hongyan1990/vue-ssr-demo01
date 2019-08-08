@@ -19,8 +19,10 @@ const devServer = {
     },
     headers: { 'Access-Control-Allow-Origin': '*' },
     proxy: {
-      '/api': 'http://127.0.0.1:3333',
-      '/user': 'http://127.0.0.1:3333'
+      '/api': {
+        target: 'http://119.23.72.26:80',
+        changeOrigin: true
+      }
     },
     hot: true
 };
@@ -38,7 +40,7 @@ let config;
 
 if(isDev) {
     config = merge(baseConfig, {
-        devtool: '#cheap-module-eval-source-map',
+        devtool: 'source-map', // #cheap-module-eval-source-map
         module: {
             rules: [
                 {
@@ -73,6 +75,7 @@ if(isDev) {
     });
 } else {
     config = merge(baseConfig, {
+        devtool: 'cheap-module-source-map',
         entry: {
             app: path.join(__dirname, '../client/client-entry.js'),
             vendor: ['vue']
@@ -117,7 +120,16 @@ if(isDev) {
             new webpack.optimize.CommonsChunkPlugin({
                 name: 'runtime'
             }),
-            new VueClientPlugin()
+            new VueClientPlugin(),
+          new webpack.optimize.UglifyJsPlugin({
+            sourceMap: true,
+            compress: {
+              warnings: false
+            }
+          }),
+          new webpack.LoaderOptionsPlugin({
+            minimize: true
+          })
         ])
     });
 }

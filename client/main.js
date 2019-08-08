@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
+
 import App from './app.vue'
 import createRouter from './config/router.js'
 import createStore from './store/store.js'
@@ -9,6 +10,7 @@ import './static/styles/reset.css'
 
 Vue.use(Router)
 Vue.use(Vuex)
+
 const router = createRouter()
 const store = createStore()
 

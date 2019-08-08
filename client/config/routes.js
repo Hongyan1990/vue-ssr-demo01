@@ -11,18 +11,14 @@ export default [
     props: true,
     // props: (route) => ({id: route.query.b}),
     name: 'app',
-    component: () => import('../views/todo/Todo.vue'),
+    component: () => import('../views/point/Point.vue'),
     beforeEnter (to, from, next) {
       console.log('routes before enter')
       next()
     }
-    // components: {
-    //   default: Todo,
-    //   a: Login
-    // }
   },
   {
-    path: '/login',
+    path: '/user/login',
     component: () => import('../views/login/Login.vue')
   }
 ]

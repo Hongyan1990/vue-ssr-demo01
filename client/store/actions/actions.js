@@ -14,14 +14,14 @@ const handleError = (err) => {
 }
 
 export default {
-  updateCountAsync (store, data) {
-    setTimeout(() => {
-      store.commit('updateCount', {num: data.num, num2: 22})
-    }, data.time)
-  },
-  fetchTodos ({commit}) {
+  // updateCountAsync (store, data) {
+  //   setTimeout(() => {
+  //     store.commit('updateCount', {num: data.num, num2: 22})
+  //   }, data.time)
+  // },
+  fetchTodos ({commit}, param) {
     commit('startLoading')
-    clientModel.getAllTodos()
+    clientModel.getAllTodos(param)
       .then(data => {
         commit('fillTodos', data)
         commit('endLoading')
@@ -31,18 +31,37 @@ export default {
         handleError(err)
       })
   },
+  fetchTodo ({commit}, id) {
+    commit('startLoading')
+    return new Promise((resolve, reject) => {
+      clientModel.getTodo(id)
+        .then(data => {
+          resolve(data)
+          commit('handleTodo', data)
+          commit('endLoading')
+        })
+        .catch(err => {
+          reject(err)
+          commit('endLoading')
+          handleError(err)
+        })
+    })
+  },
   toLogin ({commit}, {username, password}) {
     return new Promise((resolve, reject) => {
       commit('startLoading')
       clientModel.userLogin(username, password)
         .then(data => {
-          commit('doLogin', data)
+          commit('doLogin', {data, username})
           commit('endLoading')
           notify({content: '登陆成功'})
           resolve()
         })
         .catch(err => {
           handleError(err)
+          if (err.code === 404) {
+            notify({content: '登陆失败'})
+          }
           commit('endLoading')
           reject(err)
         })
@@ -50,30 +69,38 @@ export default {
   },
   createTodo ({commit}, todo) {
     commit('startLoading')
-    clientModel.addTodo(todo)
-      .then(data => {
-        commit('handleAddTodo', data)
-        commit('endLoading')
-        notify({
-          content: '你又增加了一条待办事项'
+    return new Promise((resolve, reject) => {
+      clientModel.addTodo(todo)
+        .then(data => {
+          commit('handleAddTodo', data)
+          commit('endLoading')
+          resolve(data)
+          notify({
+            content: '你又增加了一条待办事项'
+          })
         })
-      })
-      .catch(err => {
-        handleError(err)
-        commit('endLoading')
-      })
+        .catch(err => {
+          handleError(err)
+          reject(err)
+          commit('endLoading')
+        })
+    })
   },
   updateTodo ({commit}, todo) {
     commit('startLoading')
-    clientModel.updateTodo(todo.id, todo)
-      .then(data => {
-        commit('endLoading')
-        commit('handleUpdateTodo', data)
-      })
-      .catch(err => {
-        handleError(err)
-        commit('endLoading')
-      })
+    return new Promise((resolve, reject) => {
+      clientModel.updateTodo(todo.points_user, todo)
+        .then(data => {
+          commit('endLoading')
+          resolve(data)
+          // commit('handleUpdateTodo', data)
+        })
+        .catch(err => {
+          handleError(err)
+          commit('endLoading')
+          reject(err)
+        })
+    })
   },
   deleteTodo ({commit}, id) {
     commit('startLoading')

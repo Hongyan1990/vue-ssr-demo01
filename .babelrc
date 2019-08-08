@@ -1,10 +1,18 @@
 {
   "presets": [
     "env",
-    "stage-1"
+    "stage-1",
+    ["es2015", { "modules": false }]
   ],
   "plugins": [
     "transform-vue-jsx",
-    "syntax-dynamic-import"
+    "syntax-dynamic-import",
+    [
+      "component",
+      {
+        "libraryName": "element-ui",
+        "styleLibraryName": "theme-chalk"
+      }
+    ]
   ]
 }

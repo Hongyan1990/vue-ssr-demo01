@@ -4,7 +4,7 @@ import bus from './util/bus'
 const {app, router} = createApp()
 
 bus.$on('toLogin', () => {
-  router.push('/login')
+  router.push('/user/login')
 })
 
 router.onReady(() => {

@@ -9,7 +9,7 @@ body {
   opacity: 0;
 }
 .bg {
-  background-image: url("../images/veer.jpg");
+  /*background-image: url("../images/veer.jpg");*/
   width: 100%;
   height: 100%;
   position: absolute;
